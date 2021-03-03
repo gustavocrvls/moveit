@@ -11,27 +11,25 @@
 
 ## 💡 Sobre o Projeto
 
-O projeto está sendo desenvolvido na Next Level Week #4 pela [Rocketseat](https://rocketseat.com.br/) 🚀
+O projeto está sendo desenvolvido na Next Level Week #4 pela [Rocketseat](https://rocketseat.com.br/) 🚀💜
 
 O Moveit é uma aplicação que funciona usando a técnica de Pomodoro para enviar avisos a cada 25 minutos de trabalho, para que haja um descanso, e então devolve uma pontuação ao usuário.
 
+## 🧙‍♂️ Como Iniciar o Projeto
 
-## Como iniciar o Projeto
-
-#### Primeiro instale as dependencias usando
+Primeiro faça a clonagem do projeto em algum diretorio do seu computador:
+```bash
+> cd "algum/diretorio/qualquer"
+> git clone https://github.com/gustavocrvls/moveit.git
+```
+Depois disso instale as dependências:
 ```bash
 > yarn install
 ```
-ou
-```bash
-> npm install
-```
-#### Depois disso inicie o servidor com o comando
-
+E então é só iniciar o projeto:
 ```bash
 > yarn dev
 ```
-ou
-```bash
-> npm run dev
-```
+O projeto vai iniciar em http://localhost:3000. 
+
+Isso é tudo, pessoal!
