@@ -15,7 +15,7 @@ O projeto está sendo desenvolvido na Next Level Week #4 pela [Rocketseat](https
 
 O Move.it é um aplicativo que funciona aplicando gamificação na técnica de Pomodoro, que consiste em criar ciclos de 25 minutos de trabalho com 5 minutos de descanso para aumentar o foco. O aplicativo envia desafios para serem concluídos ao final de cada ciclo, que se cumpridos se tornam XP e permitem que aumente o seu nível.
 
-Você pode dar uma olhada no Figma do projeto: <a href="https://www.figma.com/file/e3UkGrCXSFd21KdxeJJUWr/Move.it-1.0-Copy?node-id=160%3A2761" target="_blank">Move.it</a>
+Você pode dar uma olhada no Figma do projeto: <a href="https://www.figma.com/file/e3UkGrCXSFd21KdxeJJUWr/Move.it-1.0?node-id=160%3A2761" target="_blank">Move.it</a>
 
 ## 🛠 Tecnologias Usadas
 - HTML5
