@@ -20,18 +20,18 @@ O Moveit é uma aplicação que funciona usando a técnica de Pomodoro para envi
 
 #### Primeiro instale as dependencias usando
 ```bash
-yarn install
+> yarn install
 ```
 ou
 ```bash
-npm install
+> npm install
 ```
 #### Depois disso inicie o servidor com o comando
 
 ```bash
-yarn dev
+> yarn dev
 ```
 ou
 ```bash
-npm run dev
+> npm run dev
 ```
