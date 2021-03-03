@@ -11,7 +11,7 @@
 
 ## 💡 Sobre o Projeto
 
-O projeto está sendo desenvolvido na Next Level Week #4 pela [Rocketseat](https://rocketseat.com.br/) 🚀💜
+O projeto foi desenvolvido na Next Level Week #4 pela [Rocketseat](https://rocketseat.com.br/) 🚀💜
 
 O Move.it é um aplicativo que funciona aplicando gamificação na técnica de Pomodoro, que consiste em criar ciclos de 25 minutos de trabalho com 5 minutos de descanso para aumentar o foco. O aplicativo envia desafios para serem concluídos ao final de cada ciclo, que se cumpridos se tornam XP e permitem que aumente o seu nível.
 
