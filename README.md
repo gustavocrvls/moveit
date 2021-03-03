@@ -26,19 +26,70 @@ Você pode dar uma olhada no Figma do projeto: <a href="https://www.figma.com/fi
 
 ## 🧙‍♂️ Como Iniciar o Projeto
 
+Antes de tudo lembre de tomar um copo bem grande de café ☕️, haha.
+
 Primeiro faça a clonagem do projeto em algum diretorio do seu computador:
 ```bash
 > cd "algum/diretorio/qualquer"
-> git clone https://github.com/gustavocrvls/moveit.git
+> git clone https://github.com/gustavocrvls/be-the-hero.git
 ```
-Depois disso instale as dependências:
+### ⚙️ Backend
+
+Entre na pasta do Backend:
+
 ```bash
-> yarn install
+> cd backend
 ```
+
+Instale as dependências com o comando:
+
+```bash
+> npm install
+```
+
 E então é só iniciar o projeto:
 ```bash
-> yarn dev
+> npm run dev
 ```
-O projeto vai iniciar em http://localhost:3000. 
 
-Isso é tudo, pessoal!
+### 🖼 Frontend
+
+Entre na pasta do Frontend:
+
+```bash
+> cd frontend
+```
+
+Instale as dependências com o comando:
+
+```bash
+> npm install
+```
+
+E então é só iniciar o projeto:
+```bash
+> npm run dev
+```
+
+### 📱 Mobile
+
+Entre na pasta do Mobile:
+
+```bash
+> cd mobile
+```
+
+Instale as dependências com o comando:
+
+```bash
+> npm install
+```
+
+E então é só iniciar o projeto:
+```bash
+> npm run dev
+```
+
+Obs: Para acessar o Mobile, você vai precisar instalar o app Expo Go no seu celular :)
+
+E lembre-se "Com grandes poderes, vêm grandes responsabilidades"!
