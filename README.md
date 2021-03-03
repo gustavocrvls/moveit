@@ -20,6 +20,7 @@ Você pode dar uma olhada no Figma do projeto: <a href="https://www.figma.com/fi
 ## 🛠 Tecnologias Usadas
 - HTML5
 - CSS3
+- Typescript
 - React
 - Next.js
 
