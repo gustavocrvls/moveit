@@ -24,7 +24,7 @@ export default function Home(props: HomeProps) {
       currentExperience={props.currentExperience}
       challengesCompleted={props.challengesCompleted}
     >
-      <div className={styles.containter}>
+      <div className={styles.container}>
         <Head>
           <title>Início | Moveit</title>
         </Head>
@@ -33,12 +33,12 @@ export default function Home(props: HomeProps) {
 
         <CountdownProvider>
           <section>
-            <div>
+            <div className={styles.userContainer}>
               <Profile />
               <CompletedChallenges />
               <Countdown />
             </div>
-            <div>
+            <div className={styles.challengeContainer}>
               <ChallengeBox />
             </div>
           </section>
