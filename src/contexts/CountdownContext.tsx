@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { ChallengesContext } from './ChallengesContext';
+import { db } from '../services/firebase';
 
 interface CountdownContextData {
   minutes: number;
@@ -30,6 +31,12 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
 
   function startCountdown() {
     setIsActive(true);
+    // db.collection('users').doc('gfb').set({
+    //   challenges_completed: 0,
+    //   current_xp: 70,
+    //   level: 1,
+    //   username: 'test'
+    // });
   }
 
   function resetCountdown() {

@@ -10,6 +10,7 @@ import { CountdownProvider } from '../contexts/CountdownContext';
 
 import styles from '../styles/pages/Home.module.css';
 import { ChallengesProvider } from '../contexts/ChallengesContext';
+import { db } from '../services/firebase';
 
 interface HomeProps {
   level: number;
@@ -49,13 +50,16 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { level, currentExperience, challengesCompleted } = ctx.req.cookies;
+  // const { level, currentExperience, challengesCompleted } = ctx.req.cookies;
+
+  const response = await db.collection('users').doc('gustavocrvls').get()
+  const { current_experience, challenges_completed, level } = response.data();
 
   return {
     props: {
       level: Number(level),
-      currentExperience: Number(currentExperience),
-      challengesCompleted: Number(challengesCompleted),
+      currentExperience: Number(current_experience),
+      challengesCompleted: Number(challenges_completed),
     }
   }
 }
