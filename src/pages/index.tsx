@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } catch (err) {
     db.collection('users').doc(username).set({
       challenges_completed: 0,
-      current_xp: 0,
+      current_experience: 0,
       level: 1,
       username,
     });

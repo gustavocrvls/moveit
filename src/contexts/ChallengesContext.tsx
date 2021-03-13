@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 import LevelUpModal from '../components/LevelUpModal';
 import Noty from 'noty';
+import { db } from '../services/firebase';
 
 interface Challenge {
   type: 'body' | 'eye';
@@ -69,6 +70,14 @@ export function ChallengesProvider({
     Cookies.set('level', String(level));
     Cookies.set('currentExperience', String(currentExperience));
     Cookies.set('challengesCompleted', String(challengesCompleted));
+
+    db.collection('users').doc(username).set({
+      challenges_completed: challengesCompleted,
+      current_xp: currentExperience,
+      level: level,
+      username,
+    });
+
   }, [level, currentExperience, challengesCompleted]);
 
   function levelUp() {
