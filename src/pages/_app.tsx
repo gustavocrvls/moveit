@@ -1,5 +1,6 @@
 import '../styles/global.css';
-import { ChallengesProvider } from '../contexts/ChallengesContext';
+import 'noty/lib/noty.css';
+import 'noty/lib/themes/nest.css';
 
 function MyApp({ Component, pageProps }) {
   return (
