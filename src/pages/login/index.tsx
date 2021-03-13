@@ -2,13 +2,29 @@ import { useState } from 'react';
 import Router from 'next/router'
 import Cookies from 'js-cookie';
 import styles from '../../styles/pages/Login.module.css';
+import Noty from 'noty';
 
 export default function Login() {
   const [username, setUsername] = useState('');
+
   function login() {
-    Cookies.set('username', String(username));
-    Router.push('/');
-  }
+    fetch(`https://api.github.com/users/${username}`)
+    .then(response => response.status)
+    .then(status => {
+      if (status === 200) {
+        Cookies.set('username', String(username));
+        Router.push('/');
+      } else {
+        new Noty({
+          text: 'O usuário não foi encontrado!',
+          theme: 'nest',
+          type: 'error',
+          progressBar: true,
+          timeout: 3000,
+        }).show();
+      }
+    });
+  };
 
   return (
     <div className={styles.container}>

@@ -31,12 +31,6 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
 
   function startCountdown() {
     setIsActive(true);
-    // db.collection('users').doc('gfb').set({
-    //   challenges_completed: 0,
-    //   current_xp: 70,
-    //   level: 1,
-    //   username: 'test'
-    // });
   }
 
   function resetCountdown() {

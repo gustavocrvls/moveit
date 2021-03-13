@@ -52,19 +52,35 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { username, level, currentExperience, challengesCompleted } = ctx.req.cookies;
+  const { username } = ctx.req.cookies;
 
-  // const response = await db.collection('users').doc('gustavocrvls').get()
-  // const { current_experience, challenges_completed, level } = response.data();
+  try {
+    const response = await db.collection('users').doc(username).get();
+    const { current_experience, challenges_completed, level } = response.data();
 
-  console.log( 'result', username === undefined ? '' : username)
+    return {
+      props: {
+        username: username === undefined ? '' : username,
+        level: Number(level),
+        currentExperience: Number(current_experience),
+        challengesCompleted: Number(challenges_completed),
+      }
+    }
+  } catch (err) {
+    db.collection('users').doc(username).set({
+      challenges_completed: 0,
+      current_xp: 0,
+      level: 1,
+      username,
+    });
 
-  return {
-    props: {
-      username: username === undefined ? '' : username,
-      level: Number(level),
-      currentExperience: Number(currentExperience),
-      challengesCompleted: Number(challengesCompleted),
+    return {
+      props: {
+        username: username,
+        level: Number(0),
+        currentExperience: Number(0),
+        challengesCompleted: Number(0),
+      }
     }
   }
 }
