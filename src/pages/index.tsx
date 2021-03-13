@@ -13,6 +13,7 @@ import { ChallengesProvider } from '../contexts/ChallengesContext';
 import { db } from '../services/firebase';
 
 interface HomeProps {
+  username: string;
   level: number;
   currentExperience: number;
   challengesCompleted: number;
@@ -21,6 +22,7 @@ interface HomeProps {
 export default function Home(props: HomeProps) {
   return (
     <ChallengesProvider
+      username={props.username}
       level={props.level}
       currentExperience={props.currentExperience}
       challengesCompleted={props.challengesCompleted}
@@ -50,16 +52,19 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const { level, currentExperience, challengesCompleted } = ctx.req.cookies;
+  const { username, level, currentExperience, challengesCompleted } = ctx.req.cookies;
 
-  const response = await db.collection('users').doc('gustavocrvls').get()
-  const { current_experience, challenges_completed, level } = response.data();
+  // const response = await db.collection('users').doc('gustavocrvls').get()
+  // const { current_experience, challenges_completed, level } = response.data();
+
+  console.log( 'result', username === undefined ? '' : username)
 
   return {
     props: {
+      username: username === undefined ? '' : username,
       level: Number(level),
-      currentExperience: Number(current_experience),
-      challengesCompleted: Number(challenges_completed),
+      currentExperience: Number(currentExperience),
+      challengesCompleted: Number(challengesCompleted),
     }
   }
 }

@@ -1,7 +1,9 @@
+import Router from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import challenges from '../../challenges.json';
 import LevelUpModal from '../components/LevelUpModal';
+import Noty from 'noty';
 
 interface Challenge {
   type: 'body' | 'eye';
@@ -10,6 +12,7 @@ interface Challenge {
 }
 
 interface ChallengesContextData {
+  username: string;
   level: number;
   currentExperience: number;
   challengesCompleted: number;
@@ -24,6 +27,7 @@ interface ChallengesContextData {
 
 interface ChallengesProviderProps {
   children: ReactNode;
+  username: string;
   level: number;
   currentExperience: number;
   challengesCompleted: number;
@@ -36,6 +40,7 @@ export function ChallengesProvider({
   children,
   ...rest
 }: ChallengesProviderProps) {
+  const [username, setUsername] = useState(rest.username ?? '');
   const [level, setLevel] = useState(rest.level ?? 1);
   const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
   const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? 0);
@@ -47,6 +52,17 @@ export function ChallengesProvider({
 
   useEffect(() => {
     Notification.requestPermission();
+
+    if (!username) {
+      new Noty({
+        text: 'Você precisa fazer login primeiro!',
+        theme: 'nest',
+        type: 'error',
+        progressBar: true,
+        timeout: 3000
+      }).show();
+      Router.push('/login');
+    }
   }, []);
 
   useEffect(() => {
@@ -105,6 +121,7 @@ export function ChallengesProvider({
   return (
     <ChallengesContext.Provider
       value={{
+        username,
         level,
         currentExperience,
         challengesCompleted,
