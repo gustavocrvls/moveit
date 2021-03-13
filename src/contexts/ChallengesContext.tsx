@@ -59,7 +59,7 @@ export function ChallengesProvider({
         theme: 'nest',
         type: 'error',
         progressBar: true,
-        timeout: 3000
+        timeout: 3000,
       }).show();
       Router.push('/login');
     }
