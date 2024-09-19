@@ -1,35 +1,45 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import Cookies from "js-cookie";
+import { User } from "../models";
 
-const AuthUserContext = createContext({} as any);
+interface AuthUserContextData {
+  user: User;
+  setUser: Dispatch<User>;
+}
+
+const AuthUserContext = createContext({} as AuthUserContextData);
 
 export function AuthUserProvider({ children }: any) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      if (Cookies.get("moveituser")) {
-        setUser(JSON.parse(Cookies.get("moveituser")));
-      } else {
-        router.push("/login");
-      }
+    if (!isLoading && !user) {
+      router.push("/login");
     }
+  }, [user, isLoading]);
 
+  useEffect(() => {
     onAuthStateChanged(auth, (newUser) => {
       setUser(newUser);
-
-      Cookies.set("moveituser", JSON.stringify(newUser));
+      setIsLoading(false);
     });
-  }, [user]);
+  }, []);
 
   return (
     <AuthUserContext.Provider value={{ user, setUser }}>
-      {children}
+      {isLoading ? <div>isLoading...</div> : children}
     </AuthUserContext.Provider>
   );
 }

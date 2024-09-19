@@ -9,15 +9,13 @@ export function Profile() {
 
   return (
     <div className={styles.profileContainer}>
+      <img src={user?.photoURL} alt="profile picture" />
       <div>
-        <img src={user?.photoURL} alt="profile picture" />
-        <div>
-          <strong>{user?.displayName}</strong>
-          <p>
-            <img src="icons/level.svg" alt="level" />
-            Level {level}
-          </p>
-        </div>
+        <strong>{user?.displayName}</strong>
+        <p>
+          <img src="icons/level.svg" alt="level" />
+          Level {level}
+        </p>
       </div>
     </div>
   );

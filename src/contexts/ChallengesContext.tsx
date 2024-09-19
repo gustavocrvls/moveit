@@ -12,6 +12,7 @@ import LevelUpModal from "../components/LevelUpModal";
 import Noty from "noty";
 import { db } from "../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useAuth } from "./AuthUserContext";
 
 interface Challenge {
   type: "body" | "eye";
@@ -47,7 +48,6 @@ export function ChallengesProvider({
   children,
   ...rest
 }: ChallengesProviderProps) {
-  const { email } = rest;
   const [level, setLevel] = useState(rest.level ?? 1);
   const [currentExperience, setCurrentExperience] = useState(
     rest.currentExperience ?? 0
@@ -55,16 +55,19 @@ export function ChallengesProvider({
   const [challengesCompleted, setChallengesCompleted] = useState(
     rest.challengesCompleted ?? 0
   );
-
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
+
+  const { user } = useAuth();
+
+  console.log(user);
 
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
 
   useEffect(() => {
     Notification.requestPermission();
 
-    if (!email) {
+    if (!user?.email) {
       new Noty({
         text: "Você precisa fazer login primeiro!",
         theme: "nest",
@@ -80,12 +83,12 @@ export function ChallengesProvider({
     Cookies.set("currentExperience", String(currentExperience));
     Cookies.set("challengesCompleted", String(challengesCompleted));
 
-    setDoc(doc(db, "users", email), {
-      challenges_completed: challengesCompleted,
-      current_xp: currentExperience,
-      level: level,
-      email: email,
-    });
+    // setDoc(doc(db, "users", email), {
+    //   challenges_completed: challengesCompleted,
+    //   current_xp: currentExperience,
+    //   level: level,
+    //   email: email,
+    // });
   }, [level, currentExperience, challengesCompleted]);
 
   function levelUp() {
@@ -138,7 +141,7 @@ export function ChallengesProvider({
   return (
     <ChallengesContext.Provider
       value={{
-        email,
+        email: user?.email,
         level,
         currentExperience,
         challengesCompleted,

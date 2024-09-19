@@ -42,19 +42,22 @@
   align-items: center;
 }
 
-.inputGroup input {
+.inputGroup button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
   padding: 1.5rem;
   border-radius: 5px 0 0 5px;
   border: 0;
   color: var(--white);
-  background: linear-gradient(to right, var(--blue-dark), var(--blue));
+  background: var(--red);
+  border-radius: 5px;
 }
 
-.inputGroup button {
-  border: 0;
-  padding: 1.2rem;
-  background: var(--blue-dark);
-  border-radius: 0 5px 5px 0;
+.inputGroup button img {
+  margin-right: 12px
 }
 
 .inputGroup input::placeholder {
