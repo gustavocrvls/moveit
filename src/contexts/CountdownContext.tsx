@@ -1,6 +1,11 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { ChallengesContext } from './ChallengesContext';
-import { db } from '../services/firebase';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { ChallengesContext } from "./ChallengesContext";
 
 interface CountdownContextData {
   minutes: number;
@@ -43,8 +48,8 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
   useEffect(() => {
     if (isActive && time > 0) {
       countdownTimeOut = setTimeout(() => {
-        setTime(time - 1)
-      }, 1000)
+        setTime(time - 1);
+      }, 1000);
     } else if (isActive && time === 0) {
       setHasFinished(true);
       setIsActive(false);
@@ -60,10 +65,10 @@ export function CountdownProvider({ children }: CountdownProviderProps) {
         hasFinished,
         isActive,
         startCountdown,
-        resetCountdown
+        resetCountdown,
       }}
     >
       {children}
     </CountdownContext.Provider>
-  )
+  );
 }

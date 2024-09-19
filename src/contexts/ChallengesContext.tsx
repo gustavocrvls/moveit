@@ -1,25 +1,32 @@
-import Router from 'next/router'
-import { createContext, ReactNode, useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import challenges from '../../challenges.json';
-import LevelUpModal from '../components/LevelUpModal';
-import Noty from 'noty';
-import { db } from '../services/firebase';
+import Router from "next/router";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import Cookies from "js-cookie";
+import challenges from "../../challenges.json";
+import LevelUpModal from "../components/LevelUpModal";
+import Noty from "noty";
+import { db } from "../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 interface Challenge {
-  type: 'body' | 'eye';
+  type: "body" | "eye";
   description: string;
   amount: number;
 }
 
 interface ChallengesContextData {
-  username: string;
+  email: string;
   level: number;
   currentExperience: number;
   challengesCompleted: number;
   activeChallenge: Challenge;
   experienceToNextLevel: number;
-  levelUp: () => void,
+  levelUp: () => void;
   startNewChallenge: () => void;
   resetChallenge: () => void;
   completeChallenge: () => void;
@@ -28,12 +35,11 @@ interface ChallengesContextData {
 
 interface ChallengesProviderProps {
   children: ReactNode;
-  username: string;
+  email: string;
   level: number;
   currentExperience: number;
   challengesCompleted: number;
 }
-
 
 export const ChallengesContext = createContext({} as ChallengesContextData);
 
@@ -41,10 +47,14 @@ export function ChallengesProvider({
   children,
   ...rest
 }: ChallengesProviderProps) {
-  const [username, setUsername] = useState(rest.username ?? '');
+  const { email } = rest;
   const [level, setLevel] = useState(rest.level ?? 1);
-  const [currentExperience, setCurrentExperience] = useState(rest.currentExperience ?? 0);
-  const [challengesCompleted, setChallengesCompleted] = useState(rest.challengesCompleted ?? 0);
+  const [currentExperience, setCurrentExperience] = useState(
+    rest.currentExperience ?? 0
+  );
+  const [challengesCompleted, setChallengesCompleted] = useState(
+    rest.challengesCompleted ?? 0
+  );
 
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
@@ -54,30 +64,28 @@ export function ChallengesProvider({
   useEffect(() => {
     Notification.requestPermission();
 
-    if (!username) {
+    if (!email) {
       new Noty({
-        text: 'Você precisa fazer login primeiro!',
-        theme: 'nest',
-        type: 'error',
+        text: "Você precisa fazer login primeiro!",
+        theme: "nest",
+        type: "error",
         progressBar: true,
         timeout: 3000,
       }).show();
-      Router.push('/login');
     }
   }, []);
 
   useEffect(() => {
-    Cookies.set('level', String(level));
-    Cookies.set('currentExperience', String(currentExperience));
-    Cookies.set('challengesCompleted', String(challengesCompleted));
+    Cookies.set("level", String(level));
+    Cookies.set("currentExperience", String(currentExperience));
+    Cookies.set("challengesCompleted", String(challengesCompleted));
 
-    db.collection('users').doc(username).set({
+    setDoc(doc(db, "users", email), {
       challenges_completed: challengesCompleted,
       current_xp: currentExperience,
       level: level,
-      username,
+      email: email,
     });
-
   }, [level, currentExperience, challengesCompleted]);
 
   function levelUp() {
@@ -95,12 +103,12 @@ export function ChallengesProvider({
 
     setActiveChallenge(challenge);
 
-    new Audio('/notification.mp3').play();
+    new Audio("/notification.mp3").play();
 
-    if (Notification.permission === 'granted') {
-      new Notification('Novo desafio 🎉', {
-        body: `Valendo ${challenge.amount}xp`
-      })
+    if (Notification.permission === "granted") {
+      new Notification("Novo desafio 🎉", {
+        body: `Valendo ${challenge.amount}xp`,
+      });
     }
   }
 
@@ -110,7 +118,7 @@ export function ChallengesProvider({
 
   function completeChallenge() {
     if (!activeChallenge) {
-      return
+      return;
     }
 
     const { amount } = activeChallenge;
@@ -130,7 +138,7 @@ export function ChallengesProvider({
   return (
     <ChallengesContext.Provider
       value={{
-        username,
+        email,
         level,
         currentExperience,
         challengesCompleted,
@@ -140,15 +148,14 @@ export function ChallengesProvider({
         resetChallenge,
         experienceToNextLevel,
         completeChallenge,
-        closeLevelUpModal
+        closeLevelUpModal,
       }}
     >
-      { children }
+      {children}
 
-      {
-        isLevelUpModalOpen &&
-          <LevelUpModal />
-      }
+      {isLevelUpModalOpen && <LevelUpModal />}
     </ChallengesContext.Provider>
-  )
+  );
 }
+
+export const useChallengesContext = () => useContext(ChallengesContext);

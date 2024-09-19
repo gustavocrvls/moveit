@@ -1,27 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
-import { ChallengesContext } from '../contexts/ChallengesContext';
-import styles from '../styles/components/Profile.module.css';
+import { useChallengesContext } from "../contexts/ChallengesContext";
+import styles from "../styles/components/Profile.module.css";
+import { useAuth } from "../contexts/AuthUserContext";
 
-export function Profile () {
-  const [name, setName] = useState('');
-  const { level, username } = useContext(ChallengesContext);
+export function Profile() {
+  const { user } = useAuth();
 
-  useEffect(() => {
-    fetch(`https://api.github.com/users/${username}`)
-    .then(response => response.json())
-    .then(data => setName(data.name))
-  }, [])
+  const { level } = useChallengesContext();
 
   return (
     <div className={styles.profileContainer}>
-      <img src={`https://github.com/${username}.png`} alt="gustavocrvls"/>
       <div>
-        <strong>{name}</strong>
-        <p>
-          <img src="icons/level.svg" alt="level"/>
-          Level {level}
-        </p>
+        <img src={user?.photoURL} alt="profile picture" />
+        <div>
+          <strong>{user?.displayName}</strong>
+          <p>
+            <img src="icons/level.svg" alt="level" />
+            Level {level}
+          </p>
+        </div>
       </div>
     </div>
-  )
+  );
 }
