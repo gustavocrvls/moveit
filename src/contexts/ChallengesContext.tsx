@@ -1,4 +1,3 @@
-import Router from "next/router";
 import {
   createContext,
   ReactNode,
@@ -6,63 +5,57 @@ import {
   useEffect,
   useState,
 } from "react";
-import Cookies from "js-cookie";
 import challenges from "../../challenges.json";
 import LevelUpModal from "../components/LevelUpModal";
 import Noty from "noty";
 import { db } from "../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "./AuthUserContext";
-
-interface Challenge {
-  type: "body" | "eye";
-  description: string;
-  amount: number;
-}
-
-interface ChallengesContextData {
-  email: string;
-  level: number;
-  currentExperience: number;
-  challengesCompleted: number;
-  activeChallenge: Challenge;
-  experienceToNextLevel: number;
-  levelUp: () => void;
-  startNewChallenge: () => void;
-  resetChallenge: () => void;
-  completeChallenge: () => void;
-  closeLevelUpModal: () => void;
-}
-
-interface ChallengesProviderProps {
-  children: ReactNode;
-  email: string;
-  level: number;
-  currentExperience: number;
-  challengesCompleted: number;
-}
+import {
+  ChallengesContextData,
+  ChallengesProviderProps,
+} from "./ChallengesContext.types";
 
 export const ChallengesContext = createContext({} as ChallengesContextData);
 
-export function ChallengesProvider({
-  children,
-  ...rest
-}: ChallengesProviderProps) {
-  const [level, setLevel] = useState(rest.level ?? 1);
-  const [currentExperience, setCurrentExperience] = useState(
-    rest.currentExperience ?? 0
-  );
-  const [challengesCompleted, setChallengesCompleted] = useState(
-    rest.challengesCompleted ?? 0
-  );
+export function ChallengesProvider({ children }: ChallengesProviderProps) {
+  const [level, setLevel] = useState(1);
+  const [currentExperience, setCurrentExperience] = useState(0);
+  const [challengesCompleted, setChallengesCompleted] = useState(0);
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
 
   const { user } = useAuth();
 
-  console.log(user);
-
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
+
+  const getChallengeData = async () => {
+    try {
+      const docRef = doc(db, "users", user?.email);
+
+      const docSnap = await getDoc(docRef);
+
+      const { currentExperience, challengesCompleted, level } = docSnap.data();
+
+      return { currentExperience, challengesCompleted, level };
+    } catch {
+      return { currentExperience: 0, challengesCompleted: 0, level: 1 };
+    }
+  };
+
+  useEffect(() => {
+    getChallengeData().then(
+      ({
+        challengesCompleted: _challengesCompleted,
+        currentExperience: _currentExperience,
+        level: _level,
+      }) => {
+        setChallengesCompleted(_challengesCompleted);
+        setCurrentExperience(_currentExperience);
+        setLevel(_level);
+      }
+    );
+  }, []);
 
   useEffect(() => {
     Notification.requestPermission();
@@ -78,22 +71,12 @@ export function ChallengesProvider({
     }
   }, []);
 
-  useEffect(() => {
-    Cookies.set("level", String(level));
-    Cookies.set("currentExperience", String(currentExperience));
-    Cookies.set("challengesCompleted", String(challengesCompleted));
-
-    // setDoc(doc(db, "users", email), {
-    //   challenges_completed: challengesCompleted,
-    //   current_xp: currentExperience,
-    //   level: level,
-    //   email: email,
-    // });
-  }, [level, currentExperience, challengesCompleted]);
-
   function levelUp() {
-    setLevel(level + 1);
+    const newLevel = level + 1;
+    setLevel(newLevel);
     setIsLevelUpModalOpen(true);
+
+    return newLevel;
   }
 
   function closeLevelUpModal() {
@@ -127,11 +110,19 @@ export function ChallengesProvider({
     const { amount } = activeChallenge;
 
     let finalExperience = currentExperience + amount;
+    let newLevel = level;
 
     if (finalExperience >= experienceToNextLevel) {
       finalExperience = finalExperience - experienceToNextLevel;
-      levelUp();
+      newLevel = levelUp();
     }
+
+    setDoc(doc(db, "users", user?.email), {
+      challengesCompleted: challengesCompleted + 1,
+      currentExperience: finalExperience,
+      level: newLevel,
+      email: user?.email,
+    });
 
     setCurrentExperience(finalExperience);
     setActiveChallenge(null);
