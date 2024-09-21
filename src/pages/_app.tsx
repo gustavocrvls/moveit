@@ -2,13 +2,17 @@ import "../styles/global.css";
 import "noty/lib/noty.css";
 import "noty/lib/themes/nest.css";
 
+import { SessionProvider } from "next-auth/react";
+
 import { AuthUserProvider } from "../contexts/AuthUserContext";
 
-function App({ Component, pageProps: { user, ...pageProps } }) {
+function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <AuthUserProvider contextUser={user}>
-      <Component {...pageProps} />
-    </AuthUserProvider>
+    <SessionProvider session={session}>
+      <AuthUserProvider>
+        <Component {...pageProps} />
+      </AuthUserProvider>
+    </SessionProvider>
   );
 }
 

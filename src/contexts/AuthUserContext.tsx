@@ -9,26 +9,26 @@ import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import Cookies from "js-cookie";
-import { User } from "../models";
+import { AuthUser } from "../models";
 
 interface AuthUserContextData {
-  user: User;
-  setUser: Dispatch<User>;
+  user: AuthUser;
+  setUser: Dispatch<AuthUser>;
 }
 
 const AuthUserContext = createContext({} as AuthUserContextData);
 
 export function AuthUserProvider({ children }: any) {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<AuthUser>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/login");
-    }
-  }, [user, isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading && !user) {
+  //     router.push("/login");
+  //   }
+  // }, [user, isLoading]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (newUser) => {

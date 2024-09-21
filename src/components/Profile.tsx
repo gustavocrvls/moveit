@@ -1,17 +1,16 @@
 import { useChallengesContext } from "../contexts/ChallengesContext";
 import styles from "../styles/components/Profile.module.css";
-import { useAuth } from "../contexts/AuthUserContext";
+import { useSession } from "next-auth/react";
 
 export function Profile() {
-  const { user } = useAuth();
-
   const { level } = useChallengesContext();
+  const { data } = useSession();
 
   return (
     <div className={styles.profileContainer}>
-      <img src={user?.photoURL} alt="profile picture" />
+      <img src={data?.user?.image} alt="profile picture" />
       <div>
-        <strong>{user?.displayName}</strong>
+        <strong>{data?.user?.name}</strong>
         <p>
           <img src="icons/level.svg" alt="level" />
           Level {level}

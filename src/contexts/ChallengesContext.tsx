@@ -1,4 +1,3 @@
-import Router from "next/router";
 import {
   createContext,
   ReactNode,
@@ -11,8 +10,8 @@ import challenges from "../../challenges.json";
 import LevelUpModal from "../components/LevelUpModal";
 import Noty from "noty";
 import { db } from "../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import { useAuth } from "./AuthUserContext";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useSession } from "next-auth/react";
 
 interface Challenge {
   type: "body" | "eye";
@@ -58,16 +57,30 @@ export function ChallengesProvider({
   const [activeChallenge, setActiveChallenge] = useState(null);
   const [isLevelUpModalOpen, setIsLevelUpModalOpen] = useState(false);
 
-  const { user } = useAuth();
+  const { data } = useSession();
 
-  console.log(user);
+  console.log(data?.user);
 
   const experienceToNextLevel = Math.pow((level + 1) * 4, 2);
 
   useEffect(() => {
+    try {
+      const docRef = doc(db, "users", data?.user?.email);
+
+      getDoc(docRef).then((snap) => {
+        console.log(snap.data());
+
+        setLevel(snap.data().level);
+        setChallengesCompleted(snap.data().challenges_completed);
+        setCurrentExperience(snap.data().current_xp);
+      });
+    } catch {}
+  }, []);
+
+  useEffect(() => {
     Notification.requestPermission();
 
-    if (!user?.email) {
+    if (!data?.user?.email) {
       new Noty({
         text: "Você precisa fazer login primeiro!",
         theme: "nest",
@@ -77,19 +90,6 @@ export function ChallengesProvider({
       }).show();
     }
   }, []);
-
-  useEffect(() => {
-    Cookies.set("level", String(level));
-    Cookies.set("currentExperience", String(currentExperience));
-    Cookies.set("challengesCompleted", String(challengesCompleted));
-
-    // setDoc(doc(db, "users", email), {
-    //   challenges_completed: challengesCompleted,
-    //   current_xp: currentExperience,
-    //   level: level,
-    //   email: email,
-    // });
-  }, [level, currentExperience, challengesCompleted]);
 
   function levelUp() {
     setLevel(level + 1);
@@ -136,12 +136,19 @@ export function ChallengesProvider({
     setCurrentExperience(finalExperience);
     setActiveChallenge(null);
     setChallengesCompleted(challengesCompleted + 1);
+
+    setDoc(doc(db, "users", data?.user?.email), {
+      challenges_completed: challengesCompleted + 1,
+      current_xp: finalExperience,
+      level: level + 1,
+      email: data?.user?.email,
+    });
   }
 
   return (
     <ChallengesContext.Provider
       value={{
-        email: user?.email,
+        email: data?.user?.email,
         level,
         currentExperience,
         challengesCompleted,
