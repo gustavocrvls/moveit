@@ -1,17 +1,13 @@
 import Head from "next/head";
-// import { GetServerSideProps } from "next";
-
 import { ChallengeBox } from "../components/ChallengeBox";
 import { CompletedChallenges } from "../components/CompletedChallenges";
 import { Countdown } from "../components/Countdown";
 import { ExperienceBar } from "../components/ExperienceBar";
 import { Profile } from "../components/Profile";
-import { CountdownProvider } from "../contexts/CountdownContext";
+import { CountdownProvider } from "../contexts/CountdownContext/CountdownContext";
 
 import styles from "../styles/pages/Home.module.css";
-import { ChallengesProvider } from "../contexts/ChallengesContext";
-// import { db } from "../lib/firebase";
-// import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ChallengesProvider } from "../contexts/ChallengesContext/ChallengesContext";
 
 interface HomeProps {
   email: string;
@@ -51,61 +47,3 @@ export default function Home(props: HomeProps) {
     </ChallengesProvider>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { moveituser } = ctx.req.cookies;
-
-//   const user = moveituser ? JSON.parse(moveituser) : null;
-
-//   if (user) {
-//     try {
-//       const docRef = doc(db, "users", user.email);
-
-//       const docSnap = await getDoc(docRef);
-//       console.log("docSnap: ", docSnap);
-
-//       const { current_experience, challenges_completed, level } =
-//         docSnap.data();
-
-//       console.log(
-//         "current_experience:",
-//         current_experience,
-//         challenges_completed,
-//         level
-//       );
-
-//       return {
-//         props: {
-//           email: user.email === undefined ? "" : user.email,
-//           level: Number(level),
-//           currentExperience: Number(current_experience),
-//           challengesCompleted: Number(challenges_completed),
-//         },
-//       };
-//     } catch (err) {
-//       setDoc(doc(db, "users", user.email), {
-//         challenges_completed: 0,
-//         current_experience: 0,
-//         level: 1,
-//         email: user.email,
-//       });
-
-//       return {
-//         props: {
-//           email: user.email,
-//           level: Number(0),
-//           currentExperience: Number(0),
-//           challengesCompleted: Number(0),
-//         },
-//       };
-//     }
-//   }
-
-//   return {
-//     redirect: {
-//       permanent: false,
-//       destination: "/login",
-//     },
-//     props: {},
-//   };
-// };

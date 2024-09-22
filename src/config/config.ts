@@ -1,4 +1,4 @@
-import { Config } from "./get-config.types";
+import { Config } from "./config.types";
 
 export const getConfig = (): Config => ({
   auth: {

@@ -7,14 +7,9 @@ import {
 } from "react";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../lib/firebase";
-import Cookies from "js-cookie";
-import { User } from "../models";
-
-interface AuthUserContextData {
-  user: User;
-  setUser: Dispatch<User>;
-}
+import { auth } from "../../lib/firebase";
+import { User } from "../../models";
+import { AuthUserContextData } from "./AuthUserContext.types";
 
 const AuthUserContext = createContext({} as AuthUserContextData);
 

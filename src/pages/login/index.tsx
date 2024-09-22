@@ -1,7 +1,7 @@
 import styles from "../../styles/pages/Login.module.css";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../lib/firebase";
-import { useAuth } from "../../contexts/AuthUserContext";
+import { useAuth } from "../../contexts/auth-user-context/AuthUserContext";
 import { useRouter } from "next/router";
 
 export default function Login() {

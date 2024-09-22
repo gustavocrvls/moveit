@@ -1,6 +1,6 @@
-import { useChallengesContext } from "../contexts/ChallengesContext";
+import { useChallengesContext } from "../contexts/ChallengesContext/ChallengesContext";
 import styles from "../styles/components/Profile.module.css";
-import { useAuth } from "../contexts/AuthUserContext";
+import { useAuth } from "../contexts/auth-user-context/AuthUserContext";
 
 export function Profile() {
   const { user } = useAuth();

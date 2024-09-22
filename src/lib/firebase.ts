@@ -1,8 +1,8 @@
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { initializeApp, getApp, getApps } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { GoogleAuthProvider } from "firebase/auth";
-import { getConfig } from "../config/get-config";
+import { getConfig } from "../config/config";
 
 const firebaseConfig = {
   apiKey: getConfig().firebase.apiKey,

@@ -1,16 +1,10 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import challenges from "../../challenges.json";
-import LevelUpModal from "../components/LevelUpModal";
+import { createContext, useContext, useEffect, useState } from "react";
+import challenges from "../../../challenges.json";
+import LevelUpModal from "../../components/LevelUpModal";
 import Noty from "noty";
-import { db } from "../lib/firebase";
+import { db } from "../../lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useAuth } from "./AuthUserContext";
+import { useAuth } from "../auth-user-context/AuthUserContext";
 import {
   ChallengesContextData,
   ChallengesProviderProps,
