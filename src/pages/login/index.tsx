@@ -1,28 +1,8 @@
 import styles from "../../styles/pages/Login.module.css";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../lib/firebase";
 import { useAuth } from "../../contexts/auth-user-context/AuthUserContext";
-import { useRouter } from "next/router";
 
 export default function Login() {
-  const { setUser } = useAuth();
-  const router = useRouter();
-
-  function signIn() {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        setUser(result.user);
-        router.push("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-      });
-  }
-
-  //E83F5B
+  const { signIn } = useAuth();
 
   return (
     <div className={styles.container}>

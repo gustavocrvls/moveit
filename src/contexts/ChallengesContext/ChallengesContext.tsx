@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import challenges from "../../../challenges.json";
 import LevelUpModal from "../../components/LevelUpModal";
-import Noty from "noty";
 import { db } from "../../lib/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useAuth } from "../auth-user-context/AuthUserContext";
@@ -38,6 +37,8 @@ export function ChallengesProvider({ children }: ChallengesProviderProps) {
   };
 
   useEffect(() => {
+    Notification.requestPermission();
+
     getChallengeData().then(
       ({
         challengesCompleted: _challengesCompleted,
@@ -51,22 +52,9 @@ export function ChallengesProvider({ children }: ChallengesProviderProps) {
     );
   }, []);
 
-  useEffect(() => {
-    Notification.requestPermission();
-
-    if (!user?.email) {
-      new Noty({
-        text: "Você precisa fazer login primeiro!",
-        theme: "nest",
-        type: "error",
-        progressBar: true,
-        timeout: 3000,
-      }).show();
-    }
-  }, []);
-
   function levelUp() {
     const newLevel = level + 1;
+
     setLevel(newLevel);
     setIsLevelUpModalOpen(true);
 

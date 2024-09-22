@@ -3,5 +3,5 @@ import { User } from "../../models";
 
 export interface AuthUserContextData {
   user: User;
-  setUser: Dispatch<User>;
+  signIn: () => void;
 }

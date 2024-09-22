@@ -9,16 +9,11 @@
   },
   "dependencies": {
     "firebase": "^10.13.1",
-    "js-cookie": "^3.0.5",
     "next": "^14.2.11",
-    "next-auth": "^4.24.7",
-    "notistack": "^3.0.1",
-    "noty": "^3.2.0-beta-deprecated",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.14.31",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",

@@ -1,6 +1,4 @@
 import "../styles/global.css";
-import "noty/lib/noty.css";
-import "noty/lib/themes/nest.css";
 
 import { AuthUserProvider } from "../contexts/auth-user-context/AuthUserContext";
 

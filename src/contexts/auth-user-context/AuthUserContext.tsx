@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/router";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../lib/firebase";
+import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../lib/firebase";
 import { User } from "../../models";
 import { AuthUserContextData } from "./AuthUserContext.types";
 
@@ -18,6 +18,17 @@ export function AuthUserProvider({ children }: any) {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
+
+  function signIn() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        setUser(result.user);
+        router.push("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -33,8 +44,8 @@ export function AuthUserProvider({ children }: any) {
   }, []);
 
   return (
-    <AuthUserContext.Provider value={{ user, setUser }}>
-      {isLoading ? <div>isLoading...</div> : children}
+    <AuthUserContext.Provider value={{ user, signIn }}>
+      {isLoading ? <div /> : children}
     </AuthUserContext.Provider>
   );
 }

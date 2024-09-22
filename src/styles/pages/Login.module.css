@@ -63,3 +63,9 @@
 .inputGroup input::placeholder {
   color: var(--text-highlight);
 }
+
+@media (max-width: 1250px) {
+  .container {
+    justify-content: center;
+  }
+}
